@@ -314,7 +314,7 @@ if(typeof this.elsysDecodeConfig == "undefined") {
 		},
 
 	}
-}
+};
 }
 
 
@@ -483,9 +483,8 @@ if(typeof this.cgDeskSenseDecoderConfig == "undefined") {
 			"unimplemented":true
 		},
 	}
+};
 }
-}
-
 
 
 // Yabby DecodeConfig (FixedPositions) ver 0.1
@@ -570,7 +569,7 @@ if(typeof this.yabbyDecodeConfig == "undefined") {
 			// "ourName":"Temperature" // TODO: implement for FixedValue decoder
 		}
 	]
-}
+};
 }
 
 
@@ -628,9 +627,8 @@ if(typeof this.ellenexDecodeConfig == "undefined") {
 			"ourName":"Voltage"
 		}
 	]
+};
 }
-}
-
 
 
 // PeopleCounter decoder (FixedPositions) ver 0.1
@@ -736,9 +734,8 @@ if(typeof this.peopleCounterDecodeConfig == "undefined") {
 			// "ourName":"PayloadCounter"
 		}
 	]
+};
 }
-}
-
 
 
 if(typeof this.pyxiRftTrackerDecoderConfig == "undefined") {
@@ -851,9 +848,8 @@ if(typeof this.pyxiRftTrackerDecoderConfig == "undefined") {
 			"vendorName":"vbatlevel"
 		},
 	]
+};
 }
-}
-
 
 
 // DecentLab DecodeConfig (DecentLab format)
@@ -948,7 +944,7 @@ if(typeof this.decentLabDecodeConfig == "undefined") {
             ]
         }
     ]
-}
+};
 }
 
 
@@ -957,7 +953,6 @@ if(typeof this.decentLabDecodeConfig == "undefined") {
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Payload decoder functions ///////////////////////////////////////////////////////////
-
 
 // DecentLab payload format decoder ///////////
 if (typeof this.DecodeDecentLabPayload == "undefined") {
@@ -984,7 +979,7 @@ if (typeof this.DecodeDecentLabPayload == "undefined") {
 			}
 
 			// Device ID (Is this devUID?)
-			decodedData.payloadData.deviceId = buf.readUInt16BE(i) // TODO: figure out if this is devUID
+			decodedData.payloadData.deviceId = buf.readUInt16BE(i); // TODO: figure out if this is devUID
 			i += 2;
 
 
@@ -994,18 +989,18 @@ if (typeof this.DecodeDecentLabPayload == "undefined") {
 
 			let sensorCfg = decodeConfig.Sensors
 
-			for (j = 0; j < sensorCfg.length; j++, flags >>= 1) {
+			for (j = 0; j < sensorCfg.length; j++, flags >>= 1); {
 				if ((flags & 1) !== 1) continue; // This sensor data is not provided in this payload, skip it
 
 				var sensor = sensorCfg[j];
 				var x = [];
 				// convert data to 16-bit integer array
-				for (k = 0; k < sensor.length; k++) {
+				for (k = 0; k < sensor.length; k++); {
 					x.push(buf.readInt16BE(i));
 				}
 
 				// decode sensor values
-				for (k = 0; k < sensor.values.length; k++) {
+				for (k = 0; k < sensor.values.length; k++); {
 					var value = sensor.values[k];
 					if ("convert" in value) {
 						result[value.name] = { value: value.convert(x), unit: value.unit };
@@ -1083,7 +1078,7 @@ if(typeof this.DecodePrefixPayload == "undefined") {
 				let dataLength = innerValueCfg.numBytes
 				let value = buf[innerValueCfg.bufferF](i+1, dataLength)
 
-				let vendorCS = innerValueCfg.vendorConversionScale || 1 // "Default operator" (or more commonly, OR) If first value is falsy, return the second value
+				let vendorCS = innerValueCfg.vendorConversionScale || 1; // "Default operator" (or more commonly, OR) If first value is falsy, return the second value
 
 				decodedData.payloadData[innerValueCfg.vendorName] = value * vendorCS
 
@@ -1102,10 +1097,10 @@ if(typeof this.DecodePrefixPayload == "undefined") {
 		let dataLength = typeCfg.numBytes
 		let value = buf[typeCfg.bufferF](i+1, dataLength)
 
-		let vendorCS = typeCfg.vendorConversionScale || 1 // "Default operator" (or more commonly, OR) If first value is falsy, return the second value
+		let vendorCS = typeCfg.vendorConversionScale || 1; // "Default operator" (or more commonly, OR) If first value is falsy, return the second value
 		// vendorCS = vendorCS < 1 ? 1/vendorCS
 
-		let ourCS = typeCfg.ourConversionScale || 1
+		let ourCS = typeCfg.ourConversionScale || 1;
 
 
 		decodedData.payloadData[typeCfg.vendorName] = value * vendorCS
@@ -1117,7 +1112,7 @@ if(typeof this.DecodePrefixPayload == "undefined") {
 	}
 
 	return decodedData
-}
+};
 }
 
 
@@ -1215,9 +1210,8 @@ if(typeof this.DecodeFixedPayload == "undefined") {
 	}
 
 	return decodedData;
+};
 }
-}
-
 
 
 
@@ -1807,7 +1801,7 @@ if (typeof this.tektelicDecoder == "undefined") {
     return {
         decode: decode_data,
     };
-}
+};
 }
 
 
@@ -2454,7 +2448,7 @@ if (typeof this.eyeoDecoder == "undefined") {
         }
     }
 
-    function parseSDIMeasurement(/*_id,*/ buffer, index, /*port_id*/) { // Argument unused (Erik)
+    function parseSDIMeasurement(/*_id,*/ buffer, index/*, port_id*/) { // Argument unused (Erik)
         let num_samples = buffer[index] & 0x0f;
         let data_type_id = buffer[index] >> 4;
         let data = null;
@@ -2489,7 +2483,7 @@ if (typeof this.eyeoDecoder == "undefined") {
     return {
         decode: decode,
     };
-}
+};
 }
 
 
@@ -2536,7 +2530,7 @@ if (typeof this.oy1700Decoder == "undefined") {
 
     //return parsedValues
     return OY1700Data;
-}
+};
 }
 
 
@@ -2587,7 +2581,7 @@ if (typeof this.oy1200Decoder == "undefined") {
 }
 
 
-//pyxi rft tracker decoder TODO: This needs to be fixed, it's not FixedPosition, it is PrefixedValue
+// pyxi rft tracker decoder TODO: This needs to be fixed, it's not FixedPosition, it is PrefixedValue
 // Simple FixedPositions (probably), there's some time/date shenanigans in there that I'm pretty sure doesn't matter?  (Erik)
 if (typeof this.pyxiRftTrackerDecoder == "undefined") {
     this.pyxiRftTrackerDecoder = function (payload) {
@@ -2634,7 +2628,7 @@ if (typeof this.pyxiRftTrackerDecoder == "undefined") {
         vbatlevel: parseInt("0x" + strOut12) / 100,
     };
     return d;
-}
+};
 }
 
 
@@ -2809,7 +2803,7 @@ if (typeof this.sensativePresenceDecoder == "undefined") {
             }
     }
     return decoded;
-}
+};
 }
 
 
@@ -2869,7 +2863,7 @@ if (typeof this.ambiductorDecoder == "undefined") {
     };
 
     return d;
-}
+};
 }
 
 
@@ -2906,7 +2900,7 @@ if (typeof this.meteoHelixDecoder == "undefined") {
     decoded.Rain_min_time = precisionRound(bitShift(8, bindata), 1);
 
     return decoded;
-}
+};
 }
 
 
@@ -2941,7 +2935,7 @@ if (typeof this.meteoWindDecoder == "undefined") {
     decoded.Dir_lo10 = precisionRound(bitShift(8, bindata) * 1, 1);
 
     return decoded;
-}
+};
 }
 
 
