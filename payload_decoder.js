@@ -955,65 +955,65 @@ if(typeof this.decentLabDecodeConfig == "undefined") {
 // Payload decoder functions ///////////////////////////////////////////////////////////
 
 // DecentLab payload format decoder ///////////
-if (typeof this.DecodeDecentLabPayload == "undefined") {
-	node.warn("DecodeDecentLabPayload undefined in context, setting it now");
-    this.DecodeDecentLabPayload = function(dataStr, decodeConfig) {
-			let decodedData = {
-				payloadData: {},
-				metricsData: {}
-			};
-
-			let buf = Buffer.from(dataStr, 'hex');
-			let i = 0;
-
-
-			// Read header bytes (always 5 bytes) /////
-
-			// Protocol version, might as well check it since we have it
-			let version = buf.readUInt8(i);
-			i += 1;
-
-			if (version != decodeConfig.ProtocolVersion) {
-				node.warn("DECODER ERROR: decentlabs protocol version " + version + " doesn't match v2");
-				return { error: "protocol version " + version + " doesn't match v2" };
-			}
-
-			// Device ID (Is this devUID?)
-			decodedData.payloadData.deviceId = buf.readUInt16BE(i); // TODO: figure out if this is devUID
-			i += 2;
-
-
-			let flags = buf.readUInt16BE(i)
-			i += 2;
-
-
-			let sensorCfg = decodeConfig.Sensors
-
-			for (j = 0; j < sensorCfg.length; j++, flags >>= 1); {
-				if ((flags & 1) !== 1) continue; // This sensor data is not provided in this payload, skip it
-
-				var sensor = sensorCfg[j];
-				var x = [];
-				// convert data to 16-bit integer array
-				for (k = 0; k < sensor.length; k++); {
-					x.push(buf.readInt16BE(i));
-				}
-
-				// decode sensor values
-				for (k = 0; k < sensor.values.length; k++); {
-					var value = sensor.values[k];
-					if ("convert" in value) {
-						result[value.name] = { value: value.convert(x), unit: value.unit };
-					}
-				}
-			}
-
-
-
-
-			return decodedData;
-		}
-}
+// if (typeof this.DecodeDecentLabPayload == "undefined") {
+// 	node.warn("DecodeDecentLabPayload undefined in context, setting it now");
+//     this.DecodeDecentLabPayload = function(dataStr, decodeConfig) {
+// 			let decodedData = {
+// 				payloadData: {},
+// 				metricsData: {}
+// 			};
+//
+// 			let buf = Buffer.from(dataStr, 'hex');
+// 			let i = 0;
+//
+//
+// 			// Read header bytes (always 5 bytes) /////
+//
+// 			// Protocol version, might as well check it since we have it
+// 			let version = buf.readUInt8(i);
+// 			i += 1;
+//
+// 			if (version != decodeConfig.ProtocolVersion) {
+// 				node.warn("DECODER ERROR: decentlabs protocol version " + version + " doesn't match v2");
+// 				return { error: "protocol version " + version + " doesn't match v2" };
+// 			}
+//
+// 			// Device ID (Is this devUID?)
+// 			decodedData.payloadData.deviceId = buf.readUInt16BE(i); // TODO: figure out if this is devUID
+// 			i += 2;
+//
+//
+// 			let flags = buf.readUInt16BE(i)
+// 			i += 2;
+//
+//
+// 			let sensorCfg = decodeConfig.Sensors
+//
+// 			for (j = 0; j < sensorCfg.length; j++, flags >>= 1); {
+// 				if ((flags & 1) !== 1) { continue; } // This sensor data is not provided in this payload, skip it
+//
+// 				var sensor = sensorCfg[j];
+// 				var x = [];
+// 				// convert data to 16-bit integer array
+// 				for (k = 0; k < sensor.length; k++); {
+// 					x.push(buf.readInt16BE(i));
+// 				}
+//
+// 				// decode sensor values
+// 				for (k = 0; k < sensor.values.length; k++); {
+// 					var value = sensor.values[k];
+// 					if ("convert" in value) {
+// 						result[value.name] = { value: value.convert(x), unit: value.unit };
+// 					}
+// 				}
+// 			}
+//
+//
+//
+//
+// 			return decodedData;
+// 		}
+// }
 
 
 // PrefixedValues Decoder /////////////
